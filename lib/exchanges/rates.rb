@@ -10,19 +10,19 @@ module Exchanges
 
     @@date = Date.today
 
-    def self.date
+    def date
       @@date
     end
 
-    def self.date=(at_date)
+    def date=(at_date)
       @@date = at_date
     end
 
-    def self.codes
-      self.xml.xpath("//pozycja/kod_waluty/text()").map {|c| c.to_s }
+    def codes
+      xml.xpath("//pozycja/kod_waluty/text()").map {|c| c.to_s }
     end
 
-    def self.rates(currency)
+    def rates(currency)
       rate = {}
       rate[:symbol] = xml.xpath("//pozycja[kod_waluty='#{currency}']/kod_waluty/text()").to_s
       rate[:name] = xml.xpath("//pozycja[kod_waluty='#{currency}']/nazwa_waluty/text()").to_s
@@ -31,12 +31,12 @@ module Exchanges
       rate
     end
 
-    def self.published_at
+    def published_at
       Date.parse(xml.xpath("//tabela_kursow/data_publikacji/text()").to_s)
     end
 
     private
-    def self.filename
+    def filename
       # according to: http://www.nbp.pl/home.aspx?f=/kursy/instrukcja_pobierania_kursow_walut.html
       index = Net::HTTP.get(URI.parse(NBP + 'dir.txt'))
 
@@ -46,13 +46,13 @@ module Exchanges
       index[/(a[0-9][0-9][0-9]z#{@@date.strftime("%y%m%d")}+)/, 1]
     end
 
-    def self.url 
-      File.join(NBP, self.filename + '.xml') if self.filename
+    def url
+      File.join(NBP, filename + '.xml') if filename
     end
 
-    def self.xml
+    def xml
       begin
-        doc = open(self.url)
+        doc = open(url)
       rescue Exception => e
         puts e.message
         puts e.backtrace.inspect
