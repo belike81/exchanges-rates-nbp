@@ -15,4 +15,4 @@ gem 'childprocess'
 gem 'pry'
 gem 'pry-remote'
 gem 'pry-nav'
-gem 'nokogiri'
+gem 'nokogiri', "~> 1.5.1"
